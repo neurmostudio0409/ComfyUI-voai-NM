@@ -1,0 +1,15 @@
+# VOAI TTS API for ComfyUI - Requirements
+
+# Core dependencies
+requests>=2.25.0
+python-dotenv>=1.0.0
+
+# Audio processing (required for audio output support)
+soundfile>=0.10.0
+numpy>=1.19.0
+
+# VOAI SDK
+voai-client
+
+# Optional: For advanced features
+# torch>=1.9.0  # Usually provided by ComfyUI
