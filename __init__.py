@@ -4,7 +4,28 @@ ComfyUI VOAI API 整合模組
 """
 
 import os
+import json
 from .voai_nodes import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
+
+# 註冊自訂 API 路由
+try:
+    from aiohttp import web
+    from server import PromptServer
+
+    @PromptServer.instance.routes.get("/voai/speakers")
+    async def get_voai_speakers(request):
+        """GET /voai/speakers - 取得所有模型支援的配音員"""
+        try:
+            from .voai_api import VoaiAPI
+            api = VoaiAPI()
+            speakers = api.get_speakers()
+            return web.json_response({"success": True, "data": speakers})
+        except Exception as e:
+            return web.json_response({"success": False, "error": str(e)}, status=500)
+
+    print("✅ 已註冊 API 路由: GET /voai/speakers")
+except Exception as e:
+    print(f"⚠️ 無法註冊 API 路由（可能不在 ComfyUI 環境中）: {e}")
 
 # 載入 API key
 def load_api_key():
